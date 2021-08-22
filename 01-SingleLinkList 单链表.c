@@ -1,71 +1,88 @@
-# include <stdio.h>
-# include <stdlib.h>
-# include <stdbool.h>
+/*
+ * SingleLink
+ * 1.创建结点
+ * 2.初始化
+ *  2.1 建立头结点
+ *  2.2 初始化头结点
+ * 3.插入操作
+ *  3.1 头插法
+ *  3.2 尾插法
+ * 4.遍历
+ *  4.1 顺序遍历
+ * 5.删除
+ */
 
-// 循环单链表，就是尾指针指向头指针
-// Create SCNode 创建循环链表结点
-typedef struct SCNode{
-	int data;
-	struct SCNode* next;
-}SCNode;
+#include <stdio.h>
+#include <stdlib.h>
 
-// initLink 初始化
-SCNode* InitLink(SCNode *L){
-	SCNode *L = (SCNode*)malloc(sizeof(SCNode));
-	L ->data = 0;
-	L ->next = L;
+#define True 1
+#define False 0
+
+
+typedef struct LNode {
+    int data;               // 数据
+    struct LNode *next;     // 下一个结点
+}LNode;
+
+
+LNode* InitList(){
+    LNode* L = (LNode*)malloc(sizeof(LNode));       // 创立头结点，创立结点，需要空间
+    L ->data = 0;                                   // 用头结点记录当前链表中有多少元素
+    L ->next = NULL;
+    return L; // 最后要返回的
 }
 
-// 判空
-bool IsEmpty(SCNode *L){
-	if (L ->next == L)
-		return true;
-	return false;
+void SingleLinkHeadInsert(LNode *L,int data)//传入头指针和数据
+{
+    // 给data找个空建立一个结点
+    LNode *node;
+    node = (LNode *)malloc(sizeof(LNode));
+    node ->data = data;
+    node ->next = L->next;
+    L ->next = node;
+    L ->data++;
 }
 
-// 插入
+// 传入头指针
+void PrintList(LNode *L){
+    printf(" come in");
+    LNode *node; // 建立一个结点
+    node = L->next;
+    while(node){
+        printf("%d\n",node ->data);
+        node = node ->next;
+    }
+}
 
-// 头插
-void SCHeadInsert(SCNode *L,int data){
-	SCNode *node = (SCNode*)malloc(sizeof(SCNode));
+void SingleTailInsert(LNode *L,int data)
+{
+    LNode *node = L;
+    for (int i = 0;i<L->data;i++){
+        // printf("%d"
+        node = node->next;
+    }
+
+    LNode *n = (LNode *)malloc(sizeof(LNode));
+    n->data = data;
+    n->next = NULL;
+    node->next = n;
+    L->data ++;
+}
+
+void TailInsert(LNode *L,int data){
+	LNode* node = (LNode *)malloc(sizeof(LNode));
 	node ->data = data;
-	node ->next = L->next;
-	L->next = node;
+	node ->next = NULL;
+	LNode* Lnode = L;
+	for (int i = 0;i <L->data;i++){
+		Lnode = Lnode ->next;
+	}
+	Lnode->next= node;
 	L->data++;
 }
+// void SingleLinkDelect()
 
-// 尾插
-void SCTailInsert(SCNode *L,int data){
-	SCNode *node = (SCNode*)malloc(sizeof(SCNode));
-	node ->data = data;
-	node ->next = L;
-	SCNode *n = L;
-	for (int i = 0;i<L->data;i++){
-		n = n->next;
-	}
-	n ->next = node;
-	L->data ++;
-}
-// 输出
-void PrintLink(SCNode *L){
-	SCNode *node = L->next;
-	while (node){
-		printf("node : %d",node->data);
-		node = node ->next;
-	}
-}
-// 查找
-bool FindElem(SCNode *L,int data){
-	SCNode *node = L->data;
-	while(node){
-		if (node ->data == data)
-			return true;
-		node = node ->next;
-	}
-	return false;
-}
 
-// 删除
 int DeleteElem(LNode *L,int data){
 	LNode *PreNode = L;
 	LNode *node = PreNode->next;
@@ -82,6 +99,7 @@ int DeleteElem(LNode *L,int data){
     return False;
 }
 
+
 // 找到某个元素,并返回其指针
 LNode GetElemReturn(LNode *L,int elem){
 	LNode *node;
@@ -92,4 +110,25 @@ LNode GetElemReturn(LNode *L,int elem){
 		node = node ->next;
 	}
 	return *node;
+}
+
+
+
+int main(){
+    LNode* L = InitList();
+    SingleLinkHeadInsert(L,1);
+    SingleLinkHeadInsert(L,2);
+    SingleLinkHeadInsert(L,3);
+    SingleLinkHeadInsert(L,4);
+    SingleLinkHeadInsert(L,5);
+    SingleLinkHeadInsert(L,6);
+    SingleLinkHeadInsert(L,7);
+    int c = DeleteElem(L,7);
+    PrintList(L);
+    LNode *h = (LNode*)malloc(sizeof(LNode));
+    *h = GetElemReturn(L,4);
+    if (c)
+        printf("删除成功");
+    return 0;
+
 }
