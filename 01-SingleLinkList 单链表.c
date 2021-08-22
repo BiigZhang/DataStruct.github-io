@@ -39,21 +39,31 @@ void PrintList(LNode L){
 		node = node ->next;
 }
 
-// DeleteElem         删除某个元素
-bool DeleteElem(LNode *L,int data){
+int DeleteElem(LNode *L,int data){
 	LNode *PreNode = L->next;
+    if(L ->data <= 1){
+        if(PreNode ->data ==data){
+            L->next = NULL;
+            L->data--;
+            return True;
+        }
+        else
+            return False;
+	}
 	LNode *node = PreNode->next;
-	while(node){
-		if (node ->data == data){
+	while(PreNode){
+		if (PreNode ->data == data){
 			PreNode ->next = node ->next;
-			free(node);
 			L->data--;
-			return true;
+			free(node);
+			return True;
 		}
 		PreNode = node;
 		node = node ->next;
 	}
-	return false;
+	return False;
 }
+
+
 
 
