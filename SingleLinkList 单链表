@@ -6,7 +6,7 @@
 ## PrintList          输出全部元素
 ## DeleteElem         删除某个元素
 
-```python
+```makedown
 print("hello world")
 
 ```
